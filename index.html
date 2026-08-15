@@ -1,1 +1,113 @@
-index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Akash AI - Question Generator</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#050b16;color:#f5f7ff}
+header{border-bottom:1px solid #1d2637;padding:18px 5%;display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:24px;font-weight:800}.logo span{color:#a855f7}.sub{font-size:13px;color:#aeb8c9;margin-top:3px}
+nav a{color:#e9edf5;text-decoration:none;margin-left:24px}nav a:hover{color:#a855f7}
+main{max-width:1050px;margin:auto;padding:55px 20px}.hero{text-align:center}.badge{display:inline-block;border:1px solid #6846d8;border-radius:30px;padding:8px 18px;color:#b78cff}
+h1{font-size:clamp(42px,8vw,76px);margin:18px 0 8px;background:linear-gradient(90deg,#2196ff,#b82cff);-webkit-background-clip:text;color:transparent}
+h2{font-size:clamp(28px,5vw,48px);margin:0}.hero p{font-size:20px;color:#bdc5d4;line-height:1.5}
+.card{margin-top:35px;border:1px solid #26344c;border-radius:18px;padding:28px;background:#0a1220;box-shadow:0 15px 50px #0006}
+label{display:block;font-weight:bold;margin:14px 0 8px}textarea,select,input{width:100%;padding:15px;border-radius:10px;border:1px solid #3a475d;background:#080f1b;color:white;font-size:16px}
+textarea{min-height:150px;resize:vertical}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+button{width:100%;margin-top:22px;padding:16px;border:0;border-radius:10px;color:white;font-size:18px;font-weight:bold;cursor:pointer;background:linear-gradient(90deg,#287cff,#b523e8)}
+button:hover{filter:brightness(1.12)}.results{min-height:170px}.question{border:1px solid #293750;border-radius:12px;padding:18px;margin:12px 0;background:#0d1727}.question strong{display:block;margin-bottom:10px}.option{color:#c7cfdd;margin:7px 0}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:25px}.feature{border:1px solid #26344c;border-radius:15px;padding:22px;background:#0a1220}.feature h3{margin-top:0}.feature p{color:#adb7c7;line-height:1.5}
+footer{text-align:center;color:#8f9aab;padding:30px}
+@media(max-width:700px){nav{display:none}.grid,.features{grid-template-columns:1fr}main{padding-top:35px}}
+</style>
+</head>
+<body>
+<header>
+  <div><div class="logo">🤖 Akash <span>AI</span></div><div class="sub">Question Generator</div></div>
+  <nav><a href="#home">Home</a><a href="#features">Features</a></nav>
+</header>
+
+<main id="home">
+<section class="hero">
+  <div class="badge">✨ AI-Powered</div>
+  <h1>Akash AI</h1>
+  <h2>Question Generator</h2>
+  <p>Generate practice questions quickly and easily 🚀</p>
+</section>
+
+<section class="card">
+  <label for="topic">Enter Your Topic or Text</label>
+  <textarea id="topic" maxlength="2000" placeholder="Enter your topic, paste text, or describe what you want questions on..."></textarea>
+  <div class="grid">
+    <div><label for="type">Question Type</label>
+      <select id="type"><option>Multiple Choice</option><option>Short Answer</option><option>True / False</option></select>
+    </div>
+    <div><label for="difficulty">Difficulty Level</label>
+      <select id="difficulty"><option>Easy</option><option selected>Medium</option><option>Hard</option></select>
+    </div>
+    <div><label for="count">Number of Questions</label>
+      <select id="count"><option>5</option><option>10</option><option>15</option></select>
+    </div>
+  </div>
+  <button onclick="generateQuestions()">✨ Generate Questions</button>
+</section>
+
+<section class="card results">
+  <h2 style="font-size:28px">📄 Generated Questions</h2>
+  <div id="output" style="margin-top:20px;color:#aeb8c9">Enter a topic above and click “Generate Questions” to get started!</div>
+</section>
+
+<section class="features" id="features">
+ <div class="feature"><h3>⚡ AI Powered</h3><p>Creates relevant practice questions from your topic.</p></div>
+ <div class="feature"><h3>🎯 Customizable</h3><p>Choose question type, difficulty and number of questions.</p></div>
+ <div class="feature"><h3>✅ Instant Results</h3><p>Questions appear instantly in your browser.</p></div>
+</section>
+</main>
+
+<footer>© 2026 Akash AI Question Generator · Made with ❤️ by Akash</footer>
+
+<script>
+function generateQuestions(){
+ const topic=document.getElementById('topic').value.trim();
+ const type=document.getElementById('type').value;
+ const difficulty=document.getElementById('difficulty').value;
+ const count=Number(document.getElementById('count').value);
+ const out=document.getElementById('output');
+ if(!topic){out.innerHTML='<p style="color:#ff8f8f">Please enter a topic first.</p>';return;}
+ const templates={
+  "Multiple Choice":[
+   `What is an important concept related to ${topic}?`,
+   `Which statement about ${topic} is correct?`,
+   `Which of the following best describes ${topic}?`
+  ],
+  "Short Answer":[
+   `Explain the main idea of ${topic}.`,
+   `What are the key points of ${topic}?`,
+   `Why is ${topic} important?`
+  ],
+  "True / False":[
+   `${topic} is an important concept that can be studied and explained.`,
+   `Understanding ${topic} requires knowing its main principles.`,
+   `${topic} has no practical application.`
+  ]
+ };
+ let qs=templates[type];
+ let html='';
+ for(let i=0;i<count;i++){
+   let q=qs[i%qs.length];
+   html+=`<div class="question"><strong>${i+1}. ${q}</strong>`;
+   if(type==="Multiple Choice"){
+     html+=`<div class="option">A. Option related to ${topic}</div><div class="option">B. An unrelated idea</div><div class="option">C. Another possible explanation</div><div class="option">D. None of these</div>`;
+   } else if(type==="True / False"){
+     html+=`<div class="option">○ True &nbsp;&nbsp; ○ False</div>`;
+   } else {
+     html+=`<div class="option">Difficulty: ${difficulty} · Write your answer below.</div>`;
+   }
+   html+='</div>';
+ }
+ out.innerHTML=`<p style="color:#b78cff">Generated ${count} ${type} questions · Difficulty: ${difficulty}</p>`+html;
+}
+</script>
+</body>
+</html>
